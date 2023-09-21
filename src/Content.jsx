@@ -1,6 +1,7 @@
 import {ItemIndex} from "./ItemIndex"
 import {useState, useEffect} from "react"
 import axios from "axios"
+import {ItemNew} from "./ItemNew"
 
 export function Content() {
 
@@ -13,6 +14,13 @@ export function Content() {
       setItems(response.data)
     }))
   }
+
+  const handleCreateItem = (params, successCallback) => {
+    console.log("handleCreateItem", params);
+    axios.post("http://localhost:3000/items.json", params).then((reponse => {
+      setItems([...items, reponse.data])
+    }))
+  }
     
    useEffect(handleItemIndex, []) 
   
@@ -21,6 +29,7 @@ export function Content() {
     <div>
       <h1>Welcome to React!</h1>
       <ItemIndex items={items} />
+      <ItemNew onCreateItem={handleCreateItem}/>
     </div>
   )
 }

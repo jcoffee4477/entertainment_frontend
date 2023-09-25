@@ -55,7 +55,15 @@ export function Content() {
     console.log("handle close");
     setIsItemShowVisible(false)
   }
-    
+
+  const handleDestroyItem = (item) => {
+    console.log("destroy", item);
+    axios.delete(`http://localhost:3000/items/${item.id}.json`).then((response) => {
+      setItems(items.filter((item) => item.id != item.id ));
+      handleClose()
+    })
+  }
+
    useEffect(handleItemIndex, []) 
   
 
@@ -65,7 +73,7 @@ export function Content() {
       <ItemNew onCreateItem={handleCreateItem}/>
       <ItemIndex items={items} onItemShow={handleItemShow} />
       <Modal show={isItemShowVisible} onClose={handleClose}>
-        <ItemShow item={currentItem} onUpdateItem={handleUpdateItem} />
+        <ItemShow item={currentItem} onUpdateItem={handleUpdateItem} onDestroyItem={handleDestroyItem} />
       </Modal>
     </div>
   )

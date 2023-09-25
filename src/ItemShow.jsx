@@ -6,6 +6,10 @@ const handleSubmit = (event) => {
   props.onUpdateItem(props.item.id, params, () => event.target.reset());
 };
 
+const handleClick = () => {
+  props.onDestroyItem(props.item)
+}
+
   return (
     <div>
     <h1>Item Info</h1>
@@ -22,6 +26,7 @@ const handleSubmit = (event) => {
       </div>
       <button type="submit">Update Item</button>
     </form>
+    <button onClick={handleClick}>Destroy Item</button>
     </div>
   );
 }

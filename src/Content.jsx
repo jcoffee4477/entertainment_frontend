@@ -23,6 +23,7 @@ export function Content() {
     console.log("handleCreateItem", params);
     axios.post("http://localhost:3000/items.json", params).then((reponse => {
       setItems([...items, reponse.data])
+      successCallback()
     }))
   }
 
@@ -30,6 +31,24 @@ export function Content() {
     console.log("showItem", item);
     setIsItemShowVisible(true);
     setCurrentItem(item)
+  }
+
+  const handleUpdateItem = (id, params, successCallback) => {
+    console.log("update item", params);
+    axios.patch(`http://localhost:3000/items/${id}.json`, params).then((response) => {
+      setItems(
+        items.map((item) => {
+          if (item.id === response.data.id) {
+            return response.data;
+          } else {
+            return item
+          }
+        })
+        
+      );
+      successCallback();
+      handleClose()
+    })
   }
 
   const handleClose = () => {
@@ -46,7 +65,7 @@ export function Content() {
       <ItemNew onCreateItem={handleCreateItem}/>
       <ItemIndex items={items} onItemShow={handleItemShow} />
       <Modal show={isItemShowVisible} onClose={handleClose}>
-        <ItemShow item={currentItem} />
+        <ItemShow item={currentItem} onUpdateItem={handleUpdateItem} />
       </Modal>
     </div>
   )

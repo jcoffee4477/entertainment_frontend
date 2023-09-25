@@ -4,6 +4,9 @@ import axios from "axios"
 import {ItemNew} from "./ItemNew"
 import {Modal} from "./Modal"
 import {ItemShow} from "./ItemShow"
+import {Signup} from "./Signup"
+import {Login} from "./Login"
+import {LogoutLink} from "./LogoutLink"
 
 export function Content() {
 
@@ -70,6 +73,9 @@ export function Content() {
   return (
     <div>
       <h1>Welcome to React!</h1>
+      <Signup />
+      <Login />
+      <LogoutLink />
       <ItemNew onCreateItem={handleCreateItem}/>
       <ItemIndex items={items} onItemShow={handleItemShow} />
       <Modal show={isItemShowVisible} onClose={handleClose}>

@@ -7,12 +7,23 @@ import {ItemShow} from "./ItemShow"
 import {Signup} from "./Signup"
 import {Login} from "./Login"
 import {LogoutLink} from "./LogoutLink"
+import {FavoriteIndex} from "./FavoriteIndex"
+import {Routes, Route} from "react-router-dom"
 
 export function Content() {
 
   const [items, setItems] = useState([]);
   const [isItemShowVisible, setIsItemShowVisible] = useState(false);
-  const [currentItem, setCurrentItem] = useState({})
+  const [currentItem, setCurrentItem] = useState({});
+  const [favorites, setFavorites] = useState([]);
+
+  const handleFavoriteIndex = () => {
+    console.log("handlefavs");
+    axios.get("http://localhost:3000/favorites.json").then((response) => {
+      console.log(response.data);
+      setFavorites(response.data)
+    })
+  }
 
   const handleItemIndex = () => {
     console.log("handleitems");
@@ -68,15 +79,26 @@ export function Content() {
   }
 
    useEffect(handleItemIndex, []) 
+   useEffect(handleFavoriteIndex, [])
   
 
   return (
     <div>
+
+      <Routes>
+        <Route path="/Login" element={<Login />} />
+        <Route path="logout" element={<LogoutLink />} />
+        <Route path="/favorites" element={<FavoriteIndex favorites={favorites} />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/ItemNew" element={<ItemNew onCreateItem={handleCreateItem}/>} />
+      </Routes>
+
       <h1>Welcome to React!</h1>
-      <Signup />
-      <Login />
-      <LogoutLink />
-      <ItemNew onCreateItem={handleCreateItem}/>
+      
+      
+      
+      
+      
       <ItemIndex items={items} onItemShow={handleItemShow} />
       <Modal show={isItemShowVisible} onClose={handleClose}>
         <ItemShow item={currentItem} onUpdateItem={handleUpdateItem} onDestroyItem={handleDestroyItem} />

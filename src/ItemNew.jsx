@@ -2,6 +2,7 @@ export function ItemNew(props) {
 
   const handleSubmit =  (event) => {
     event.preventDefault();
+    console.log(event.target)
     const params = new FormData(event.target);
     props.onCreateItem(params,() => event.target.reset())
   }

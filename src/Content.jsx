@@ -9,6 +9,7 @@ import {Login} from "./Login"
 import {LogoutLink} from "./LogoutLink"
 import {FavoriteIndex} from "./FavoriteIndex"
 import {Routes, Route} from "react-router-dom"
+import {FavoritesNew} from "./FavoritesNew"
 
 export function Content() {
 
@@ -16,6 +17,17 @@ export function Content() {
   const [isItemShowVisible, setIsItemShowVisible] = useState(false);
   const [currentItem, setCurrentItem] = useState({});
   const [favorites, setFavorites] = useState([]);
+  
+
+  const handleCreateFavorite =  (params, successCallback) => {
+    console.log("handel create favorite")
+    console.log('params', params)
+      axios.post("http://localhost:3000/favorites.json", params).then((response => {
+      console.log('response.data', response.data)
+      setFavorites([...favorites, response.data]);
+      successCallback();
+    }))
+  }
 
   const handleFavoriteIndex = () => {
     console.log("handlefavs");
@@ -80,6 +92,7 @@ export function Content() {
 
    useEffect(handleItemIndex, []) 
    useEffect(handleFavoriteIndex, [])
+   
   
 
   return (
@@ -88,9 +101,10 @@ export function Content() {
       <Routes>
         <Route path="/Login" element={<Login />} />
         <Route path="logout" element={<LogoutLink />} />
-        <Route path="/favorites" element={<FavoriteIndex favorites={favorites} />} />
+        <Route path="/favorites" element={<FavoriteIndex favorites={favorites}  />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/ItemNew" element={<ItemNew onCreateItem={handleCreateItem}/>} />
+        
       </Routes>
 
       <h1>Welcome to React!</h1>
@@ -98,10 +112,10 @@ export function Content() {
       
       
       
-      
-      <ItemIndex items={items} onItemShow={handleItemShow} />
+      <FavoritesNew newFavorites={handleCreateFavorite} />
+      <ItemIndex items={items} onItemShow={handleItemShow} newFavorite={handleCreateFavorite} />
       <Modal show={isItemShowVisible} onClose={handleClose}>
-        <ItemShow item={currentItem} onUpdateItem={handleUpdateItem} onDestroyItem={handleDestroyItem} />
+        <ItemShow item={currentItem} onUpdateItem={handleUpdateItem} onDestroyItem={handleDestroyItem}  />
       </Modal>
     </div>
   )

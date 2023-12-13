@@ -10,13 +10,20 @@ import {LogoutLink} from "./LogoutLink"
 import {FavoriteIndex} from "./FavoriteIndex"
 import {Routes, Route} from "react-router-dom"
 import {FavoritesNew} from "./FavoritesNew"
+import {FavoritesModal} from "./FavoritesModal"
+import {FavoritesShow} from "./FavoritesShow"
 
 export function Content() {
+
+  
 
   const [items, setItems] = useState([]);
   const [isItemShowVisible, setIsItemShowVisible] = useState(false);
   const [currentItem, setCurrentItem] = useState({});
   const [favorites, setFavorites] = useState([]);
+  const [isFavoritesShowVisible, setIsFavoritesShowVisible] = useState(false)
+  const [currentFavorite, setCurrentFavorite] = useState({})
+  
   
 
   const handleCreateFavorite =  (params, successCallback) => {
@@ -28,6 +35,14 @@ export function Content() {
       successCallback();
     }))
   }
+
+  const handleShowFavorites = (favorite) => {
+    console.log("show favorite", favorite)
+    setIsFavoritesShowVisible(true);
+    setCurrentFavorite(favorite)
+  }
+
+  
 
   const handleFavoriteIndex = () => {
     console.log("handlefavs");
@@ -59,6 +74,7 @@ export function Content() {
     setCurrentItem(item)
   }
 
+
   const handleUpdateItem = (id, params, successCallback) => {
     console.log("update item", params);
     axios.patch(`http://localhost:3000/items/${id}.json`, params).then((response) => {
@@ -80,6 +96,7 @@ export function Content() {
   const handleClose = () => {
     console.log("handle close");
     setIsItemShowVisible(false)
+    setIsFavoritesShowVisible(false)
   }
 
   const handleDestroyItem = (item) => {
@@ -89,6 +106,17 @@ export function Content() {
       handleClose()
     })
   }
+
+  const handleDestroyFavorite = (favorite) => {
+    console.log("destroy", favorite);
+     axios.delete(`http://localhost:3000/favorites/${favorite.id}.json`).then((response) => {
+      setFavorites(favorites.filter((favorite) => favorite.id != favorite.id ));
+      handleClose()
+    })
+  }
+  
+
+  
 
    useEffect(handleItemIndex, []) 
    useEffect(handleFavoriteIndex, [])
@@ -101,9 +129,10 @@ export function Content() {
       <Routes>
         <Route path="/Login" element={<Login />} />
         <Route path="logout" element={<LogoutLink />} />
-        <Route path="/favorites" element={<FavoriteIndex favorites={favorites}  />} />
+        <Route path="/favorites" element={<FavoriteIndex favorites={favorites} onShowFavorites={handleShowFavorites}  />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/ItemNew" element={<ItemNew onCreateItem={handleCreateItem}/>} />
+        <Route path="/" element={<ItemIndex items={items} onItemShow={handleItemShow} newFavorite={handleCreateFavorite} />} />
         
       </Routes>
 
@@ -112,8 +141,11 @@ export function Content() {
       
       
       
-      <FavoritesNew newFavorites={handleCreateFavorite} />
-      <ItemIndex items={items} onItemShow={handleItemShow} newFavorite={handleCreateFavorite} />
+      <FavoritesModal show={isFavoritesShowVisible} onClose={handleClose}>
+       <FavoritesShow favorites={currentFavorite}
+       onDestroyFavorite={handleDestroyFavorite} />
+      </FavoritesModal>
+      
       <Modal show={isItemShowVisible} onClose={handleClose}>
         <ItemShow item={currentItem} onUpdateItem={handleUpdateItem} onDestroyItem={handleDestroyItem}  />
       </Modal>

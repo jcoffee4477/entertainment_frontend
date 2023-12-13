@@ -1,4 +1,51 @@
+import axios from "axios"
+import {useEffect, useState} from "react"
 export function ItemIndex(props) {
+
+  const [endPoint, setEndPoints] = useState('')
+  const [container, setContainer] = useState([])
+  const [finalPoint, setFinalPoint] = useState('')
+  
+  useEffect(() => {
+    fetchMe()
+  }, [finalPoint])
+
+
+  const fetchMe = () => {
+ 
+    if (endPoint) {
+
+  fetch(`https://moviesdatabase.p.rapidapi.com/titles/search/title/${endPoint}?exact=true&titleType=movie`, {
+    method: 'GET',
+    headers: {
+      'X-RapidAPI-Key': '8dff404ea7msh819937829f27d01p13d9bdjsne7d5cafd9b20',
+      'X-RapidAPI-Host': 'moviesdatabase.p.rapidapi.com'}
+  
+  })
+  .then(response => {
+    
+    return response.json()
+  })
+  .then(data => {
+    setContainer(data.results)
+    console.log("helllllo", data.results)
+  })
+  .catch(err => {
+    console.error(err);
+  });
+
+}
+  }
+
+  const onChangeHandler = (e) => {
+    setEndPoints(e.target.value)
+  }
+
+  const submitHandler = (e) => {
+    e.preventDefault()
+    setFinalPoint(endPoint)
+  }
+  
 
   
 
@@ -11,6 +58,24 @@ export function ItemIndex(props) {
   return (
     <div>
       <h1>All Items</h1>
+
+      <form onSubmit={submitHandler}>
+        <input type="text" value={endPoint} onChange={onChangeHandler} />
+
+        <button type="submit">submit</button> 
+      </form>
+
+      
+
+      
+      {container.map((movie) => (
+        <div>
+          <h2>{movie.titleText.text}</h2>
+        </div>
+      ))}
+     
+
+
        {props.items.map((item) => (
          <div key={item.id}>
            <h2>{item.name}</h2>
@@ -21,8 +86,11 @@ export function ItemIndex(props) {
 
            <button onClick={() => props.onItemShow(item)}>More Info</button>
 
-           <button onClick={handleSubmit}>Add to favorites</button>
+           
          </div>
+
+        
+
       ))}
     </div>
   );

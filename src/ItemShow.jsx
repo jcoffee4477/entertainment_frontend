@@ -38,6 +38,17 @@ const handleAddToFavorites = () => {
   })
 }
 
+const redirectToItemIndex = () => {
+  window.location.href = "/"
+}
+
+const myFunction = () => {
+  redirectToItemIndex();
+  handleAddToFavorites()
+}
+
+
+
 useEffect(handleItemShow, [])
 
   return (
@@ -53,7 +64,7 @@ useEffect(handleItemShow, [])
       <button type="submit">Update Item</button>
     </form>
     <button onClick={handleClick}>Destroy Item</button>
-    <button onClick={handleAddToFavorites}>Add to favorites</button>
+    <button onClick={myFunction}>Add to favorites</button>
     </div>
   );
 }

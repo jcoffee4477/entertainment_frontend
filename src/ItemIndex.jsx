@@ -2,12 +2,12 @@ import axios from "axios"
 import {useEffect, useState} from "react"
 export function ItemIndex(props) {
 
-  const [endPoint, setEndPoints] = useState('')
+ /* const [endPoint, setEndPoints] = useState('')
   const [container, setContainer] = useState([])
   const [finalPoint, setFinalPoint] = useState('')
   
   useEffect(() => {
-    fetchMe()
+    
   }, [finalPoint])
 
 
@@ -44,35 +44,23 @@ export function ItemIndex(props) {
   const submitHandler = (e) => {
     e.preventDefault()
     setFinalPoint(endPoint)
-  }
+  } */
   
 
   
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const params = new FormData(event.target);
-    props.onCreateFavorite(params,() => event.target.reset())
-  }
+  
 
   return (
     <div>
       <h1>All Items</h1>
 
-      <form onSubmit={submitHandler}>
-        <input type="text" value={endPoint} onChange={onChangeHandler} />
-
-        <button type="submit">submit</button> 
-      </form>
+      
 
       
 
       
-      {container.map((movie) => (
-        <div>
-          <h2>{movie.titleText.text}</h2>
-        </div>
-      ))}
+      
      
 
 
@@ -95,3 +83,11 @@ export function ItemIndex(props) {
     </div>
   );
 }
+
+
+
+/* const handleSubmit = (event) => {
+    event.preventDefault();
+    const params = new FormData(event.target);
+    props.onCreateFavorite(params,() => event.target.reset())
+  }}*/

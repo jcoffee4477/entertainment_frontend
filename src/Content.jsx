@@ -12,6 +12,8 @@ import {Routes, Route} from "react-router-dom"
 import {FavoritesNew} from "./FavoritesNew"
 import {FavoritesModal} from "./FavoritesModal"
 import {FavoritesShow} from "./FavoritesShow"
+import {MovieIndex} from "./MovieIndex"
+
 
 export function Content() {
 
@@ -140,7 +142,7 @@ export function Content() {
       
       
       
-      
+      <MovieIndex />
       <FavoritesModal show={isFavoritesShowVisible} onClose={handleClose}>
        <FavoritesShow favorites={currentFavorite}
        onDestroyFavorite={handleDestroyFavorite} />

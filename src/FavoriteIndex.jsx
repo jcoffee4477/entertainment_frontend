@@ -3,7 +3,7 @@ import axios from "axios"
 
 export function FavoriteIndex(props) {
   console.log('props',props)
-
+  
  
 
   return (
